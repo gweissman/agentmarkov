@@ -1,3 +1,5 @@
-# agentmarkov: an R package to visualize agent-based Markov chain simulations
-# version 0.0.1
-# Author: Gary Weissman (gary AT babelgraph DOT org)
+-------------------------------------------------------------------------------
+agentmarkov: an R package to visualize agent-based Markov chain simulations
+version 0.0.1
+Author: Gary Weissman (gary AT babelgraph DOT org)
+
