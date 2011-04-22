@@ -1,5 +1,23 @@
 -------------------------------------------------------------------------------
 agentmarkov: an R package to visualize agent-based Markov chain simulations
-version 0.0.1
+-------------------------------------------------------------------------------
+version: 0.0.1
 Author: Gary Weissman (gary AT babelgraph DOT org)
+License: GPLv2 or later
 
+-----------
+Install
+-----------
+Step 1: Download the source to your working R directory
+Step 2: At the R command prompt type
+	> install.packages('agentmarkov-0.0.1.tar.gz',type='source',repos=NULL)
+Step 3: Load the package from the R command line by typing
+	> library(agentmarkov)
+
+
+-----------
+TODO List
+-----------
+*Include realtime visualization of cohort progression
+*Include support for numerical solutions to Markov chain
+*Reprogram data structures and loops in C++ for performance

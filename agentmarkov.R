@@ -11,11 +11,7 @@ setClass(
     model.name='character',
 		num.states='numeric',
 		m='matrix', 
-		state.names='character'),
-    prototype(model.name='joe',
-    num.states=3,
-    m=matrix(1/3,nrow=3,ncol=3),
-    state.names=paste('state.',1:3)))
+		state.names='character'))
 
 setGeneric('getMatrix',function(object,...)
 	standardGeneric('getMatrix'))
@@ -37,22 +33,20 @@ setMethod('setMatrix',
             else { print('Error: Cannot replace new matrix. Wrong dimensions.') }
           } )
           
-# setGeneric('print',function(object,...)
-#   standardGeneric('print'))
-#           
-# setMethod(f='print',
-#           signature='markov',
-#           definition=function(object,...) {
-#           cat('Markov Model:',object@model.name,'\n') 
-#           cat('States:',object@num.states,'\n')
-#           tmp <- object@m; names(tmp)<-object@state.names
-#           cat('Transition Matrix:\n')
-#           print(tmp)
-#           } )
+setMethod("show","markov",
+          function(object) {
+            cat('Markov Model:',object@model.name,'\n') 
+            cat('States:',object@num.states,'\n')
+            tmp <- as.data.frame(object@m)
+            rownames(tmp)<-object@state.names
+            colnames(tmp)<-object@state.names
+            cat('Transition Matrix:\n')
+            print(tmp)
+} )
             
 # functions to interact with markov model
-newMM <- function(d=5,
-                  name='NewModel',
+newMM <- function(d=2,
+                  name='Sample Model',
                   mm=matrix(1/d,ncol=d,nrow=d),
                   states=paste('state.',1:d,sep=''))
           {
@@ -65,31 +59,49 @@ newMM <- function(d=5,
 
   
 # create cohort model object  
-  
+setClass(
+  Class='cohort', 
+	representation=representation(
+    cohort.name='character',
+		size='numeric',
+		data='list'))
+    
 # functions to interact with the cohort
+newCohort <- function(size=10,
+                name='Sample Cohort',
+                info=list(),...) {
+                  
+        new(Class='cohort',
+        cohort.name=name,
+        size=size,
+        data=info)
+}
 
 # create graph object model
 setGeneric('graphMM',function(object,...)
   standardGeneric('graphMM'))
   
 setMethod('graphMM','markov',
-  function(object,...) {
+  function(object,style=1,...) {
     if (!require(igraph)) { print('ERROR: Needs igraph library') }
     else {
-      
       rownames(object@m) <- object@state.names
       colnames(object@m) <- object@state.names
       gmm <- graph.adjacency(object@m,weighted=TRUE)
-      plot(gmm,layout=layout.reingold.tilford,vertex.shape='square',
+      gmm$layout <- switch(style,layout.reingold.tilford(gmm),
+                layout.fruchterman.reingold(gmm))
+      plot(gmm,vertex.shape='square',
         main=paste('Markov transition diagram for',object@model.name),
-        edge.curved=TRUE,edge.label=E(gmm)$weight,vertex.color='goldenrod')
-      
+        edge.curved=TRUE,edge.label=E(gmm)$weight,vertex.color='goldenrod',
+        vertex.label=V(gmm)$name)
     }
 })
-
 
 # functions to interact with graph model
 
 # run and display model
+runModel <- function(cc,mm,time.steps=100) {
+
+}
 
 # run and save model to animation
